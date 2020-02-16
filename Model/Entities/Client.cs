@@ -18,15 +18,11 @@ namespace Clients
 		//in C# can be created dynamic classes
         public virtual List<BorrowedHistory> History { get; set; }
 
-        public Client()
-        {
-        }
+		public Client() { }
 
-        public Client(string name)
-        {
-            Name = name;
-        }
+		public Client(string name) { Name = name; }
 
+		
         public void BorrowBook(Book book)
         {
             //BorrowedBooks = new List<Book>();
@@ -50,14 +46,19 @@ namespace Clients
         public void ReturnBook(Book book, List<BorrowedHistory> borrowedHistories)
         {
             History = borrowedHistories;
-            //BorrowedBooks.Remove(book);
-            if (History.Any(x => x.Book == book && x.Client == this && !x.ReturnDate.HasValue))
-            {
-                History.Where(x => x.Book == book && x.Client == this && !x.ReturnDate.HasValue).FirstOrDefault().ReturnDate = DateTime.Now;
-            }
-
+			//BorrowedBooks.Remove(book);
+			if (History.Any(x => x.Book == book && x.Client == this && !x.ReturnDate.HasValue))
+			{
+				var history = History.Where(x => x.Book == book && x.Client == this && !x.ReturnDate.HasValue).FirstOrDefault();
+				history.ReturnDate = DateTime.Now;
+			}
+			else
+			{
+				Console.WriteLine("There are no borrowed books by {0}", Name);
+			}
             Console.WriteLine($"{book.Title} has been returned to Library.\nPress any key to contnue.");
             Console.Read();
         }
+		
     }
 }

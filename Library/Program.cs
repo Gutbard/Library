@@ -196,18 +196,18 @@ namespace Library
                 new MenuItem(5, "Remove book", RemoveBook)
             };
 
-            var menu = new Menu(MenuItems);
-            menu.Process();
+			//var menu = new Menu(MenuItems);
+			//menu.Process();
 
-            //using (var repositoriy = new LibraryRepositoriy())
-            //{
-            //    //var books = repositoriy.FindByYear(2010).FirstOrDefault();
-            //    //var author = books.Author;
-            //    addRichter(repositoriy);
+			using (var repositoriy = new LibraryRepositoriy())
+			{
+				//var books = repositoriy.FindByYear(2010).FirstOrDefault();
+				//var author = books.Author;
+				addRichter(repositoriy);
 
-            //    //repositoriy.AddClient(new Client("asdb"));
-            //}
-        }
+				//repositoriy.AddClient(new Client("asdb"));
+			}
+		}
 
         public static void addRichter(LibraryRepositoriy repositoriy)
         {

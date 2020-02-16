@@ -96,7 +96,7 @@ namespace Library
 	}
 	*/
 
-		public Client _currentClient;
+		public static Client _currentClient;
 		static void BorrowBook()
 		{
 			using (var repositoriy = new LibraryRepositoriy())
@@ -109,9 +109,16 @@ namespace Library
 
 				var book = repositoriy.FindBooksBy_Year(year).Where(b => b.Title == title).FirstOrDefault();
 
-				if(book==null)
+				if (book==null)
 					Console.WriteLine("book not found");
+				else if (book.Client != null)
+					Console.WriteLine("This book is borrowed");
+				else
+				{
+					repositoriy.BorrowBook(book,_currentClient);
 
+					
+				}
 
 			}
 		}
@@ -152,9 +159,29 @@ namespace Library
 				else Console.WriteLine("No borrowed books.");
 			}
 		}
+		static void Login()
+		{
+			Console.WriteLine("Please enter your name: ");
+			var name = Console.ReadLine();
 
-					private static void Main(string[] args)
+			using (var repositoriy = new LibraryRepositoriy())
+			{
+				if (!repositoriy.IsClientExistits(name))
+				{
+					if (!string.IsNullOrEmpty(name))
+						repositoriy.AddClient(name);
+				}
+				_currentClient = repositoriy.GetClient(name);
+			}
+
+			Console.WriteLine("Hi, {0}!");
+		}
+		private static void Main(string[] args)
         {
+			Console.WriteLine("Welcome to Library client app.");
+
+			Login();
+
 			var MenuItems = new MenuItem[]
 			{
 				new MenuItem(1, "BorrowBook", BorrowBook),
@@ -166,28 +193,9 @@ namespace Library
 			var menu = new Menu(MenuItems);
 			menu.Process();
 
-			
-            using (var repositoriy = new LibraryRepositoriy())
-            {
-                Console.WriteLine("Welcome to Library client app.");
-                Console.WriteLine("Please enter your name: ");
 
-                var name = Console.ReadLine();
-                if (!repositoriy.IsClientExistits(name))
-                {
-                    if (!string.IsNullOrEmpty(name))
-                        repositoriy.AddClient(new Client(name));
-                }
-
-                string itemStr; int item;
-                do
-                {
-                    Console.WriteLine("Hi, {0}!\nSelect an action:\n1.Borrow a book\n2.Return a borrowed book", name);
-                    itemStr = Console.ReadLine();
-                } while (!int.TryParse(itemStr, out item));
-
-                Client client = repositoriy.GetClient(name);
-
+			using (var repositoriy = new LibraryRepositoriy())
+			{/*
                 //Borrow
                 if (item == 1)
                 {
@@ -202,8 +210,9 @@ namespace Library
                     Book book = repositoriy.FindBookBy_Guid(guid);
 
                     repositoriy.BorrowBook(book, client);
-                }
+                }*/
                 //Return
+				/*
                 else
                 {
                    // Menu();
@@ -218,7 +227,7 @@ namespace Library
 
                     repositoriy.ReturnBook(book, client);
                 }
-				
+				*/
 				
 		}
 			/*

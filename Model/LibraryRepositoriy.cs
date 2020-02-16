@@ -42,12 +42,17 @@ namespace Model
             return libraryContext.Books.Where(a => a.Author.FirstName.Contains(name) || a.Author.LastName.Contains(name));
         }
 
-        public Book FindBookBy_Guid(Guid guid)
+		public IEnumerable<Book> FindBooksBy_Title(string title)
+		{
+			return libraryContext.Books.Where(b => b.Title.Contains(title)).ToArray();
+		}
+
+		public Book FindBookBy_Guid(Guid guid)
         {
             return libraryContext.Books.FirstOrDefault(b => b.BookId == guid);
         }
 
-        //новый синтаксис
+
         public void Add(Book book)
         {
             libraryContext.Books.Add(book);
@@ -55,6 +60,7 @@ namespace Model
             Console.Read();
         }
 
+        //новый синтаксис
         public void Remove(Book book) => libraryContext.Books.Remove(book);
 
         public void RemoveById(Guid id)
@@ -68,9 +74,9 @@ namespace Model
             Console.Read();
         }
 
-        public void AddClient(Client client)
+        public void AddClient(string clientName)
         {
-            libraryContext.Clients.Add(client);
+            libraryContext.Clients.Add(new Client(clientName));
             Console.WriteLine("You have been added to database successfully.\nPress any key to continue.");
             Console.Read();
         }
@@ -88,24 +94,25 @@ namespace Model
         public void BorrowBook(Book book, Client client)
         {
             client.BorrowBook(book);
-        }
 
+		}
+		/*
         public void ReturnBook(Book book, Client client)
         {
             client.ReturnBook(book, ViewHistoryOfBorrowedBooks(client));
         }
-
-		public IQueryable<BorrowedHistory> ViewBorrowedBooks(Client currentClient)
+		*/
+		public IEnumerable<BorrowedHistory> ViewBorrowedBooks(Client currentClient)
 		{
 			var client = libraryContext.Clients.Single(c => c.ClientId == currentClient.ClientId);
 			return client.History; 
 		}
-
+		/*
         public List<BorrowedHistory> ViewHistoryOfBorrowedBooks(Client client)
         {
             return libraryContext.BorrowedHistory.Where(x => x.Client.Name == client.Name).ToList();
         }
-
+		*/
         public void SaveChanges()
         {
             try
