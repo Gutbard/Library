@@ -10,7 +10,7 @@ namespace Library
 {
     internal class Program
     {
-		/*
+        /*
 		2. Application for Clients
 		Features:
 			- Borrow/return book
@@ -18,8 +18,7 @@ namespace Library
 			- View history of borrowed books
 			*/
 
-
-		/*
+        /*
 	private static void FindByAuthor()
 	{
 		using (var repositoriy = new LibraryRepositoriy())
@@ -96,106 +95,107 @@ namespace Library
 	}
 	*/
 
-		public static Client _currentClient;
-		static void BorrowBook()
-		{
-			using (var repositoriy = new LibraryRepositoriy())
-			{
-				Console.WriteLine("Enter book title: .");
-				var title = Console.ReadLine();
+        public static Client _currentClient;
 
-				Console.WriteLine("Enter book year: .");
-				var year = int.Parse(Console.ReadLine());
-
-				var book = repositoriy.FindBooksBy_Year(year).Where(b => b.Title == title).FirstOrDefault();
-
-				if (book==null)
-					Console.WriteLine("book not found");
-				else if (book.Client != null)
-					Console.WriteLine("This book is borrowed");
-				else
-				{
-					repositoriy.BorrowBook(book,_currentClient);
-
-					
-				}
-
-			}
-		}
-
-		static void ReturnBook()
-		{
-			using (var repositoriy = new LibraryRepositoriy())
-			{
-				Console.WriteLine("enter borrowed id: ");
-				var id = int.Parse(Console.ReadLine());
-
-				repositoriy.ViewBorrowedBooks(_currentClient).Single(h=>h.BorrowedHistoryId==id);
-
-			}
-			}
-		static void ViewBorrowedBooks()
-		{
-			using (var repositoriy = new LibraryRepositoriy())
-			{
-				var borrowedBooks = repositoriy.ViewBorrowedBooks(_currentClient)?.Where(h=>!h.ReturnDate.HasValue);
-				foreach (var b in borrowedBooks)
-				{
-					Console.WriteLine($"{b.BorrowedHistoryId}{b.BorrowDate}{b.Book.Title}");
-				}
-			}
-		}
-		static void ViewHistoryBorrowedBooks()
-		{
-			using (var repositoriy = new LibraryRepositoriy())
-			{
-				var borrowedBooks = repositoriy.ViewBorrowedBooks(_currentClient);
-				if (borrowedBooks!=null) {
-					foreach (var b in borrowedBooks)
-					{
-						Console.WriteLine($"{b.BorrowedHistoryId}{b.BorrowDate}{b.ReturnDate}{b.Book.Title}");
-					}
-				}
-				else Console.WriteLine("No borrowed books.");
-			}
-		}
-		static void Login()
-		{
-			Console.WriteLine("Please enter your name: ");
-			var name = Console.ReadLine();
-
-			using (var repositoriy = new LibraryRepositoriy())
-			{
-				if (!repositoriy.IsClientExistits(name))
-				{
-					if (!string.IsNullOrEmpty(name))
-						repositoriy.AddClient(name);
-				}
-				_currentClient = repositoriy.GetClient(name);
-			}
-
-			Console.WriteLine("Hi, {0}!");
-		}
-		private static void Main(string[] args)
+        private static void BorrowBook()
         {
-			Console.WriteLine("Welcome to Library client app.");
+            using (var repositoriy = new LibraryRepositoriy())
+            {
+                Console.WriteLine("Enter book title: .");
+                var title = Console.ReadLine();
 
-			Login();
+                Console.WriteLine("Enter book year: .");
+                var year = int.Parse(Console.ReadLine());
 
-			var MenuItems = new MenuItem[]
-			{
-				new MenuItem(1, "BorrowBook", BorrowBook),
-				new MenuItem(2, "ReturnBook", ReturnBook),
-				new MenuItem(3, "ViewBorrowedBooks", ViewBorrowedBooks),
-				new MenuItem(4, "ViewHistoryBorrowedBooks", ViewHistoryBorrowedBooks),
-			};
+                var book = repositoriy.FindBooksBy_Year(year).Where(b => b.Title == title).FirstOrDefault();
 
-			var menu = new Menu(MenuItems);
-			menu.Process();
+                if (book == null)
+                    Console.WriteLine("book not found");
+                else if (book.Client != null)
+                    Console.WriteLine("This book is borrowed");
+                else
+                {
+                    repositoriy.BorrowBook(book, _currentClient);
+                }
+            }
+        }
 
+        private static void ReturnBook()
+        {
+            using (var repositoriy = new LibraryRepositoriy())
+            {
+                Console.WriteLine("enter borrowed id: ");
+                var id = int.Parse(Console.ReadLine());
 
-			using (var repositoriy = new LibraryRepositoriy())
-			{/*
+                repositoriy.ViewBorrowedBooks(_currentClient).Single(h => h.BorrowedHistoryId == id);
+            }
+        }
+
+        private static void ViewBorrowedBooks()
+        {
+            using (var repositoriy = new LibraryRepositoriy())
+            {
+                var borrowedBooks = repositoriy.ViewBorrowedBooks(_currentClient)?.Where(h => !h.ReturnDate.HasValue);
+                foreach (var b in borrowedBooks)
+                {
+                    Console.WriteLine($"{b.BorrowedHistoryId}{b.BorrowDate}{b.Book.Title}");
+                }
+            }
+        }
+
+        private static void ViewHistoryBorrowedBooks()
+        {
+            using (var repositoriy = new LibraryRepositoriy())
+            {
+                var borrowedBooks = repositoriy.ViewBorrowedBooks(_currentClient);
+                if (borrowedBooks != null)
+                {
+                    foreach (var b in borrowedBooks)
+                    {
+                        Console.WriteLine($"{b.BorrowedHistoryId}{b.BorrowDate}{b.ReturnDate}{b.Book.Title}");
+                    }
+                }
+                else Console.WriteLine("No borrowed books.");
+            }
+        }
+
+        private static void Login()
+        {
+            Console.WriteLine("Please enter your name: ");
+            var name = Console.ReadLine();
+
+            using (var repositoriy = new LibraryRepositoriy())
+            {
+                if (!repositoriy.IsClientExistits(name))
+                {
+                    if (!string.IsNullOrEmpty(name))
+                        repositoriy.AddClient(name);
+                }
+                _currentClient = repositoriy.GetClient(name);
+            }
+
+            Console.WriteLine("Hi, {0}!", _currentClient.Name);
+        }
+
+        private static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to Library client app.");
+
+            Login();
+
+            var MenuItems = new MenuItem[]
+            {
+                new MenuItem(1, "BorrowBook", BorrowBook),
+                new MenuItem(2, "ReturnBook", ReturnBook),
+                new MenuItem(3, "ViewBorrowedBooks", ViewBorrowedBooks),
+                new MenuItem(4, "ViewHistoryBorrowedBooks", ViewHistoryBorrowedBooks),
+            };
+
+            var menu = new Menu(MenuItems);
+            menu.Process();
+
+            using (var repositoriy = new LibraryRepositoriy())
+            {/*
                 //Borrow
                 if (item == 1)
                 {
@@ -211,26 +211,25 @@ namespace Library
 
                     repositoriy.BorrowBook(book, client);
                 }*/
-                //Return
-				/*
-                else
-                {
-                   // Menu();
-                    string guidStr; Guid guid;
-                    do
-                    {
-                        Console.WriteLine("Enter the Guid of the Book which you want to return: ");
-                        guidStr = Console.ReadLine();
-                    } while (!Guid.TryParse(guidStr, out guid));
+             //Return
+             /*
+             else
+             {
+                // Menu();
+                 string guidStr; Guid guid;
+                 do
+                 {
+                     Console.WriteLine("Enter the Guid of the Book which you want to return: ");
+                     guidStr = Console.ReadLine();
+                 } while (!Guid.TryParse(guidStr, out guid));
 
-                    Book book = repositoriy.FindBookBy_Guid(guid);
+                 Book book = repositoriy.FindBookBy_Guid(guid);
 
-                    repositoriy.ReturnBook(book, client);
-                }
-				*/
-				
-		}
-			/*
+                 repositoriy.ReturnBook(book, client);
+             }
+             */
+            }
+            /*
             void Menu()
             {
                 string findStr; int find;
