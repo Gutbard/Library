@@ -37,7 +37,7 @@
                 .PrimaryKey(t => t.BookId)
                 .ForeignKey("dbo.Authors", t => t.Author_AuthorId)
                 .ForeignKey("dbo.Clients", t => t.Client_ClientId)
-                .Index(t => t.Title)
+                .Index(t => t.Title, unique: true)
                 .Index(t => t.Genre)
                 .Index(t => t.Author_AuthorId)
                 .Index(t => t.Client_ClientId);
@@ -72,9 +72,9 @@
         
         public override void Down()
         {
+            DropForeignKey("dbo.Books", "Client_ClientId", "dbo.Clients");
             DropForeignKey("dbo.BorrowedHistories", "Client_ClientId", "dbo.Clients");
             DropForeignKey("dbo.BorrowedHistories", "Book_BookId", "dbo.Books");
-            DropForeignKey("dbo.Books", "Client_ClientId", "dbo.Clients");
             DropForeignKey("dbo.Books", "Author_AuthorId", "dbo.Authors");
             DropIndex("dbo.BorrowedHistories", new[] { "Client_ClientId" });
             DropIndex("dbo.BorrowedHistories", new[] { "Book_BookId" });

@@ -87,20 +87,22 @@ namespace Model
 
 		public Client GetClient(string name)
 		{
-			return libraryContext.Clients.SingleOrDefault(x => x.Name == name);
+			return libraryContext.Clients.Single(x => x.Name == name);
 		}
 
-		public void BorrowBook(Book book, Client client)
+		public bool DoesClientHasAnyBorrowed(Client client)
 		{
-			client.BorrowBook(book);
+			var cl = libraryContext.Clients.Single(c => c.ClientId == client.ClientId);
+			bool isExist = cl.History.Any(h => h.ReturnDate == null);//.FirstOrDefault();
+			return isExist;
 		}
 
-		/*
-        public void ReturnBook(Book book, Client client)
-        {
-            client.ReturnBook(book, ViewHistoryOfBorrowedBooks(client));
-        }
-		*/
+		public bool DidClientBorrowAnyEarlier(Client client)
+		{
+			var cl = libraryContext.Clients.Single(c => c.ClientId == client.ClientId);
+			bool isExist = cl.History.Any();//.FirstOrDefault();
+			return isExist;
+		}
 
 		public IEnumerable<BorrowedHistory> ViewBorrowedBooks(Client currentClient)
 		{
@@ -120,12 +122,12 @@ namespace Model
 			try
 			{
 				libraryContext.SaveChanges();
+				Console.WriteLine("Saved!");
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine("Operation Failed.\nMessage: {0}\n{1}", e.Message, e.StackTrace);
 			}
-			Console.ReadLine();
 		}
 	}
 }

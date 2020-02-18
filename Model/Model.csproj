@@ -55,21 +55,21 @@
     <Compile Include="Entities\BookGenre.cs" />
     <Compile Include="Entities\BorrowedHistory.cs" />
     <Compile Include="Entities\Client.cs" />
+    <Compile Include="Migrations\202002170731001_InitialCreate.cs" />
+    <Compile Include="Migrations\202002170731001_InitialCreate.designer.cs">
+      <DependentUpon>202002170731001_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002170736008_BookMigration.cs" />
+    <Compile Include="Migrations\202002170736008_BookMigration.designer.cs">
+      <DependentUpon>202002170736008_BookMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Ui.Common\IPrintable.cs" />
     <Compile Include="Ui.Common\IProcessable.cs" />
     <Compile Include="Ui.Common\Menu.cs" />
     <Compile Include="Ui.Common\MenuItem.cs" />
     <Compile Include="LibraryContext.cs" />
     <Compile Include="LibraryRepositoriy.cs" />
-    <Compile Include="Migrations\202002141355095_InitialCreate.cs" />
-    <Compile Include="Migrations\202002141355095_InitialCreate.designer.cs">
-      <DependentUpon>202002141355095_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202002141504208_BookMigration.cs" />
-    <Compile Include="Migrations\202002141504208_BookMigration.designer.cs">
-      <DependentUpon>202002141504208_BookMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,11 +79,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002141355095_InitialCreate.resx">
-      <DependentUpon>202002141355095_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202002170731001_InitialCreate.resx">
+      <DependentUpon>202002170731001_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202002141504208_BookMigration.resx">
-      <DependentUpon>202002141504208_BookMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202002170736008_BookMigration.resx">
+      <DependentUpon>202002170736008_BookMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
